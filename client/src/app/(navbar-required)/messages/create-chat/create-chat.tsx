@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Drawer,
   ListItem,
   ListItemAvatar,
@@ -9,6 +10,8 @@ import {
   ListItemText,
   Stack,
   TextField,
+  Toolbar,
+  Typography,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styles from "./create-chat.module.css";
@@ -20,6 +23,8 @@ import { useDebounce } from "@/utils/debounce";
 import { AdminUser } from "@/type/user.type";
 import { useAppDispatch } from "@/features/store";
 import { createPrivateChatAsync } from "@/features/chat/handle-chat/chat.action";
+import { ChatTypeEnum } from "@/enum/chat.enum";
+import CreateGroup from "./create-group/create-group";
 
 interface CreateChatProp {
   open: boolean;
@@ -34,6 +39,9 @@ export default function CreateChatDrawer({
   const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
   const { users, handleFiltersChange } = useUsers();
   const dispatch = useAppDispatch();
+  const [createOption, setCreateOption] = useState<ChatTypeEnum>(
+    ChatTypeEnum.PRIVATE,
+  );
 
   const debouncedSearch = useDebounce(() => {
     handleFiltersChange({
@@ -60,6 +68,7 @@ export default function CreateChatDrawer({
           />
         )}
       </AlertBox>
+
       <Box className={styles.box}>
         <Stack spacing={2}>
           <ListItem disablePadding>
@@ -69,25 +78,54 @@ export default function CreateChatDrawer({
             <ListItemText primary="New Chat" />
             <ListItemButton></ListItemButton>
           </ListItem>
+          <Toolbar>
+            <Stack spacing={1}>
+              <Typography>Select Create option</Typography>
+              <Stack direction={"row"} spacing={2}>
+                <Button
+                  color={
+                    createOption === ChatTypeEnum.GROUP ? "info" : "secondary"
+                  }
+                  variant="contained"
+                  onClick={() => setCreateOption(ChatTypeEnum.GROUP)}
+                >
+                  Group Chat
+                </Button>
+                <Button
+                  color={
+                    createOption === ChatTypeEnum.PRIVATE ? "info" : "secondary"
+                  }
+                  variant="contained"
+                  onClick={() => setCreateOption(ChatTypeEnum.PRIVATE)}
+                >
+                  Private Chat
+                </Button>
+              </Stack>
+            </Stack>
+          </Toolbar>
+        </Stack>
+      </Box>
+      {createOption === ChatTypeEnum.PRIVATE ? (
+        <Box aria-label="create-private-chat">
           <TextField
+            sx={{ p: "0 1rem" }}
             placeholder="search .."
             fullWidth
             onChange={(e) => setSearch(e.target.value)}
           />
-        </Stack>
-      </Box>
+          {users.map((user) => (
+            <ListItemButton key={user.id} onClick={() => setSelectedUser(user)}>
+              <ListItemAvatar>
+                <Avatar src={user.avatar} />
+              </ListItemAvatar>
 
-      <Box>
-        {users.map((user) => (
-          <ListItemButton key={user.id} onClick={() => setSelectedUser(user)}>
-            <ListItemAvatar>
-              <Avatar src={user.avatar} />
-            </ListItemAvatar>
-
-            <ListItemText primary={user.username} />
-          </ListItemButton>
-        ))}
-      </Box>
+              <ListItemText primary={user.username} />
+            </ListItemButton>
+          ))}
+        </Box>
+      ) : (
+        <CreateGroup />
+      )}
     </Drawer>
   );
 }

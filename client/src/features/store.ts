@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { useDispatch, useSelector } from 'react-redux';
 import authReducer from './auth/auth.slice'
+import chatReducers from './chat/chat.slice'
 
 const persistConfig = {
   key: 'root',
@@ -22,6 +23,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  chat : chatReducers
 });
 
 const persistedReducer = persistReducer(

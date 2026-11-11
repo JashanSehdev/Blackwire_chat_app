@@ -78,7 +78,7 @@ paths:
                   message :
                     type: string
                     example: "user blocked successfully"
-  /chat:
+  /chats:
     post:
       summary: "This endpoint is to create Chats"
       operationId: "createChat"
@@ -105,10 +105,52 @@ paths:
         "400":
           description: "Bad Request"     
 
+    get:
+      operationId: 'getChats'
+      summary: "This method resturn users's chat"
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              type: object
+              properties: 
+                search :
+                  type : string
+                  example: "abc"
+                sort :
+                  type: string
+                  example: 'created_at || name || lastMessage'
+                orderBy :
+                  type: string
+                  example: 'ASC || DESC'
+      responses: 
+        '200':
+          description: "Return logges In user's chat"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getChats"
+                  
+
+          
+          
+
 
 
 components:
   schemas: 
+    
+    response_base:
+      type: object
+      properties: 
+        success : 
+          type: boolean
+          example: false
+        message :
+          type : boolean
+          example: false
+
+
     createChat_request:
       type: object
       properties:
@@ -140,7 +182,12 @@ components:
         unreadCount:
           type: number
           example: 2
-        
+    
+    getChats : 
+      type : array
+      items: 
+        $ref: "#/components/schemas/createChat_request" 
+
 
 
   securitySchemes:

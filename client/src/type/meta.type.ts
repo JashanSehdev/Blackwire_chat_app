@@ -25,5 +25,9 @@ export interface PaginationRequest{
     limit: number
 }
 
+export interface FilterRequest extends Partial<PaginationRequest>  {
+    search ?: string
+}
+
 
 

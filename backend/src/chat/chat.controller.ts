@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@nestjs/common';
 import { ChatService } from './chat.service.js';
 import { CreateChatDto } from './dto/create-chat.dto.js';
 import { UpdateChatDto } from './dto/update-chat.dto.js';
+import { FilterChatDto } from './dto/filter-chat.dto.js';
+import { CreateGroupDto } from './dto/create-group.dto.js';
 
 @Controller('chats')
 export class ChatController {
@@ -13,9 +15,14 @@ export class ChatController {
     return this.chatService.create(createChatDto, req.user.id);
   }
 
+  @Post("group")
+  createGroup(@Body() createGroupDto: CreateGroupDto, @Req() req : Request & {user : any}){
+    return this.chatService.createGroup(createGroupDto, req.user.id)
+  }
+
   @Get()
-  findAll() {
-    return this.chatService.findAll();
+  findAll(@Query() filterChatDto : FilterChatDto ,@Req() req : Request & {user : any}) {
+    return this.chatService.getChats(filterChatDto, req.user.id);
   }
 
   @Get(':id')

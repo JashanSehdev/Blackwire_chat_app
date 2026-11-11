@@ -1,6 +1,6 @@
 
-import { useEffect, useState } from "react";
-import { Autocomplete, TextField } from "@mui/material";
+import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
+import { Autocomplete, AutocompleteOwnerState, AutocompleteProps, AutocompleteRenderGetTagProps, AutocompleteRenderOptionState, AutocompleteRenderValue, TextField } from "@mui/material";
 import {
   Controller,
   type Control,
@@ -8,6 +8,14 @@ import {
   type FieldValues,
   type RegisterOptions,
 } from "react-hook-form";
+
+
+type MultiAutocompleteMUIProps<Option> = AutocompleteProps<
+  Option,
+  true,
+  false,
+  false
+>;
 
 type MultiAutocompleteProps<T extends FieldValues, Option> = {
   name: FieldPath<T>;
@@ -21,6 +29,20 @@ type MultiAutocompleteProps<T extends FieldValues, Option> = {
   disabled?: boolean;
   minSearchLength?: number;
   debounceTime?: number;
+  renderOption ?: (
+    props : HTMLAttributes<HTMLLIElement> & { key: React.Key },
+    option: Option,
+    state: AutocompleteRenderOptionState
+  ) => ReactNode
+
+  renderTags ?: {
+    renderTags?: (
+    value: readonly Option[],
+    getTagProps: AutocompleteRenderGetTagProps,
+    ownerState: AutocompleteOwnerState<Option, true, false, false>
+  ) => ReactNode;
+  }
+  renderValue?: MultiAutocompleteMUIProps<Option>["renderValue"];
 };
 
 export function MultiAutocompleteController<
@@ -36,8 +58,11 @@ export function MultiAutocompleteController<
   rules,
   placeholder,
   disabled,
+  renderOption,
+  renderTags,
   minSearchLength = 2,
   debounceTime = 400,
+  renderValue
 }: MultiAutocompleteProps<T, Option>) {
   const [options, setOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -76,7 +101,7 @@ export function MultiAutocompleteController<
       clearTimeout(timer);
     };
   }, [inputValue, loadOptions, debounceTime, minSearchLength]);
-
+  
   return (
     <Controller
       name={name}
@@ -111,6 +136,7 @@ export function MultiAutocompleteController<
             filterOptions={(options) => options}
             getOptionLabel={getOptionLabel}
             isOptionEqualToValue={isOptionEqualToValue}
+            renderOption={renderOption}
             onInputChange={(_, value, reason) => {
               if (reason === "input" || reason === "clear") {
                 setInputValue(value);
@@ -119,6 +145,9 @@ export function MultiAutocompleteController<
             onChange={(_, newValue) => {
               field.onChange(newValue);
             }}
+
+            renderValue={renderValue}
+
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -127,6 +156,7 @@ export function MultiAutocompleteController<
                 error={!!error}
                 helperText={error?.message}
                 fullWidth
+                size="small"
               />
             )}
           />

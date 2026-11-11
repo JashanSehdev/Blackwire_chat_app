@@ -1,6 +1,6 @@
 import { Chat } from "@/type/chat.type";
 import { createSlice } from "@reduxjs/toolkit";
-import { createPrivateChatAsync } from "./handle-chat/chat.action";
+import { createPrivateChatAsync, fetchChatsAsync } from "./handle-chat/chat.action";
 
 
 type InitialState = {
@@ -21,6 +21,9 @@ const authSlice = createSlice({
     builder.addCase(createPrivateChatAsync.fulfilled, (state, action) => {
         state.chats.push(action.payload.data);
         state.loading = false
+    })
+    .addCase(fetchChatsAsync.fulfilled, (state, action) => {
+      state.chats = action.payload.data;
     })
     .addCase(createPrivateChatAsync.pending,(state) => {
         state.loading = true
