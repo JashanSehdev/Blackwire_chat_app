@@ -1,0 +1,150 @@
+openapi: 3.0.3
+info:
+  title: My Application API
+  description: API documentation for my application
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001
+    description: Development server
+
+security:
+  - CookieAuth: []
+
+paths:
+  /users:
+    get:
+      operationId: 'getUsers'
+      summary: 'this API gives access to the admin to get users'
+      security: []
+      responses:
+        '200':
+          description: 'User retrieved Succesfully'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+
+                        username:
+                          type: string
+                          example: 'john'
+
+                        password:
+                          type: string
+                          example: 'password'
+                  meta:
+                    type: object
+                    properties:
+                      totalpages:
+                        type: integer
+                        example: 1
+
+                      currentPage:
+                        type: integer
+                        example: 1
+
+                      total:
+                        type: integer
+                        example: 12
+
+                      limit:
+                        type: integer
+                        example: 10
+
+  /users/:id/access:
+    patch:
+      operationId: 'block/unblockUser'
+      summary: "this is use to block / unblock user"
+      responses:
+        '200':
+          description: 'user access updated Successfully'
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  success:
+                    type: boolean
+                    example: false
+                  
+                  message :
+                    type: string
+                    example: "user blocked successfully"
+  /chat:
+    post:
+      summary: "This endpoint is to create Chats"
+      operationId: "createChat"
+      requestBody:
+        content: 
+          application:json:
+            schema:
+              $ref: "#/components/schemas/createChat_request"
+      responses:
+        "201":
+          description: "chat created successfully"
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  success : 
+                    type: boolean
+                  message : 
+                    type: string
+                    example: "message created Successfully"
+                  data:
+                    $ref: "#/components/schemas/createChat_response_data"
+        "400":
+          description: "Bad Request"     
+
+
+
+components:
+  schemas: 
+    createChat_request:
+      type: object
+      properties:
+        partipantId:
+          type : integer 
+          example: 2
+        type:
+          type: string
+          example: 'group or private'
+          
+    createChat_response_data:
+      type: object
+      properties: 
+        id:
+          type: string
+          example: 2_1
+        profileAvatar:
+          type: string
+          example: "any url image"
+        name:
+          type: string
+          example: "reciever user name"
+        lastMessage: 
+          type: string
+          example: "Hi there"
+        lastMessageTime:
+          type: string
+          example: "05-07-2004T00:00:00"
+        unreadCount:
+          type: number
+          example: 2
+        
+
+
+  securitySchemes:
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token

@@ -1,0 +1,26 @@
+.main {
+  height: 95%;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.content {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  padding-bottom: 16px !important;
+}
+
+
+.chat {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+.chatBox {
+  flex: 1 !important;
+  overflow-y: auto !important; /* Enables scrolling for messages */
+}

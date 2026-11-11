@@ -1,0 +1,24 @@
+.container{
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+
+.avatar {
+    background-color: var(--mui-secondary-main) !important;
+    font-size: 20px !important;
+    height: 100 !important;
+    width: 100 !important;
+}
+
+.editBox{
+    position: relative;
+}
+
+.editAvatar{
+    position: absolute !important;
+    height: 40 !important;
+    width: 40 !important;
+    bottom: 0px;
+    right: 0px;
+}

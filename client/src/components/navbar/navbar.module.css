@@ -1,0 +1,18 @@
+.container {
+    justify-content: space-between;
+    top : 0;
+    bottom : 0;
+    align-items: center;
+}
+.logo_bar{
+    background-color:var(--mui-primary-main);
+    border-radius: 20px;
+    color: var(--mui-primary-contrast);
+}
+
+.main {
+    padding: 1rem;
+}
+.section1{
+    flex: 1
+}

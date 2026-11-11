@@ -1,0 +1,13 @@
+.Container{
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.Container a {
+    color: white;
+}
+
+.inputBox{
+    width: 100% !important;
+}

@@ -1,0 +1,16 @@
+.main{
+    width: 100%;
+    height: 100dvh;
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+
+.leftSection{
+    min-width: 300px;
+}
+
+.rigthSection{
+    flex: 1;
+}

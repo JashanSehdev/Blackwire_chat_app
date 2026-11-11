@@ -1,0 +1,11 @@
+
+.container{
+    padding: 2rem;
+}
+.title {
+    font-weight: 700 !important;
+}
+
+.container a {
+    color: white;
+}
