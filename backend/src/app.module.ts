@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthMiddleware } from './middleware/auth.middleware.js';
 import { ChatModule } from './chat/chat.module.js';
 import { ChatMembersModule } from './chat_members/chat_members.module.js';
+import { MessagesModule } from './messages/messages.module.js';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -47,6 +48,7 @@ import { ChatMembersModule } from './chat_members/chat_members.module.js';
     AuthModule,
     ChatModule,
     ChatMembersModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

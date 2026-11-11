@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn,type Relation } from "typeorm";
 import { ChatTypeEnum } from "../enum/chat.enum.js";
 import { ChatMembers } from "../../chat_members/entities/chat_member.entity.js";
+import { Message } from "../../messages/entities/message.entity.js";
 
 @Entity('chats')
 export class Chat {
@@ -22,4 +23,7 @@ export class Chat {
 
     @OneToMany(() => ChatMembers, (chatMembers) => chatMembers.Chat)
     Members: Relation<ChatMembers[]>
+
+    @OneToMany(() => Message, (message) => message.Chat) 
+    Messages: Relation<Message[]>
 }

@@ -3,6 +3,7 @@ import { Role } from "../enum/roles.enum.js";
 import { Status } from "../enum/status.enum.js";
 import { Chat } from "../../chat/entities/chat.entity.js";
 import { ChatMembers } from "../../chat_members/entities/chat_member.entity.js";
+import { Message } from "../../messages/entities/message.entity.js";
 
 @Entity('users')
 
@@ -40,4 +41,7 @@ export class User {
 
     @OneToMany(()=>ChatMembers, (chatMembers) => chatMembers.Member)
     ChatMemberShips : Relation<ChatMembers[]>
+
+    @OneToMany(() => Message ,(message) => message.Sender)
+    SentMessage : Relation<Message>
 }
